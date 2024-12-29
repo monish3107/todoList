@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-4r4)3(nkb8dioe7=(sd$e*sg$37_n0@r14jd5krnsml(m!skv+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1').split(',')
+ALLOWED_HOSTS = ['todolist-n6hg.onrender.com', 'localhost', '127.0.0.1']
 
 # Application definition
 
