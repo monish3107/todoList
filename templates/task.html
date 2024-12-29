@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>To-Do List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand text-light" href="/">To-Do List</a>
+        
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active text-light" aria-current="page" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-light" href="/task/">Task</a>
+            </li> 
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container my-3">
+      <h3 class="text-center py-4">All tasks</h3>
+      
+      <form class="d-flex" role="search" method="GET" action="{% url 'tasks' %}">
+        <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-light" type="submit">Search</button>
+      </form>
+    
+      <table class="table mt-3" id="tasks-table">
+        <thead>
+            <tr>
+                <th scope="col">Sr.</th>
+                <th scope="col">Task Title</th>
+                <th scope="col">Task Description</th>
+                <th scope="col">Completed</th> <!-- New column for completion -->
+            </tr>
+        </thead>
+        <tbody id="tasks-body">
+            {% for task in tasks %}
+            <tr {% if task.completed %}style="text-decoration: line-through; color: gray;"{% endif %}> <!-- Cross out completed tasks -->
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ task.taskTitle }}</td>
+                <td>{{ task.taskDesc }}</td>
+                <td>
+                    <form method="POST" action="{% url 'toggle_task_completion' task.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-success">
+                            {% if task.completed %} Undo {% else %} Complete {% endif %}
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
