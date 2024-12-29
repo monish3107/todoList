@@ -1,32 +1,30 @@
-from django.shortcuts import redirect, render, HttpResponse, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404
 from home.models import Task
-
-# login: admin, admin
 
 # Create your views here.
 def home(request):
-    context = {'success': False}
+    # Handle task creation
     if request.method == "POST":
-        title = request.POST['title']
-        desc = request.POST['desc']
-        print(title, desc)
-        ins = Task(taskTitle=title, taskDesc=desc)
-        ins.save()
-        context = {'success': True}
-    return render(request, 'index.html', context)
+        if "title" in request.POST:
+            title = request.POST.get("title")
+            desc = request.POST.get("desc")
+            ins = Task(taskTitle=title, taskDesc=desc)
+            ins.save()
+            context = {'success': True}
+        elif "task_id" in request.POST:  # Handle toggle completion
+            task_id = request.POST.get("task_id")
+            task = get_object_or_404(Task, id=task_id)
+            task.completed = not task.completed
+            task.save()
+            context = {'success': False}  # No success alert for toggling
+        return redirect('/')
 
-def task(request):
-    search_query = request.GET.get('search', '')  
+    # Handle task search
+    search_query = request.GET.get('search', '')
     if search_query:
-        allTasks = Task.objects.filter(taskTitle__icontains=search_query) 
+        allTasks = Task.objects.filter(taskTitle__icontains=search_query)
     else:
-        allTasks = Task.objects.all() 
+        allTasks = Task.objects.all()
 
-    context = {'tasks': allTasks}
-    return render(request, 'task.html', context)
-
-def toggle_task_completion(request, task_id):
-    task = Task.objects.get(id=task_id)
-    task.completed = not task.completed  
-    task.save()
-    return redirect('tasks')
+    context = {'success': False, 'tasks': allTasks}
+    return render(request, 'index.html', context)
