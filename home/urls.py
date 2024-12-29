@@ -21,5 +21,5 @@ from home import views
 urlpatterns = [
     path('', views.home, name='home'),
     path('task/', views.task, name='tasks'),
-    path('task/toggle/<int:task_id>/', views.toggle_task_completion, name='toggle_task_completion'),  # New URL for toggling completion
+    path('task/toggle/<int:task_id>/', views.toggle_task_completion, name='toggle_task_completion'),  
 ]
