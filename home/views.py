@@ -3,7 +3,7 @@ from home.models import Task
 
 # Create your views here.
 def home(request):
-    # Handle task creation
+
     if request.method == "POST":
         if "title" in request.POST:
             title = request.POST.get("title")
@@ -11,15 +11,14 @@ def home(request):
             ins = Task(taskTitle=title, taskDesc=desc)
             ins.save()
             context = {'success': True}
-        elif "task_id" in request.POST:  # Handle toggle completion
+        elif "task_id" in request.POST: 
             task_id = request.POST.get("task_id")
             task = get_object_or_404(Task, id=task_id)
             task.completed = not task.completed
             task.save()
-            context = {'success': False}  # No success alert for toggling
+            context = {'success': False}  
         return redirect('/')
 
-    # Handle task search
     search_query = request.GET.get('search', '')
     if search_query:
         allTasks = Task.objects.filter(taskTitle__icontains=search_query)
