@@ -35,9 +35,9 @@
       </div>
     </nav>
 
-    {% if success %}
+    {% if message %}
     <div class="alert alert-success alert-dismissible fade show" role="alert">
-      <strong>Task updated!</strong>
+      <strong>{{ message }}</strong>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     {% endif %}
@@ -74,7 +74,8 @@
             <th scope="col">#</th>
             <th scope="col">Task Title</th>
             <th scope="col">Task Description</th>
-            <th scope="col">Completed</th>
+            <th scope="col">Status</th>
+            <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -88,8 +89,15 @@
                 {% csrf_token %}
                 <input type="hidden" name="task_id" value="{{ task.id }}">
                 <button type="submit" class="btn btn-outline-success">
-                  {% if task.completed %} Undo {% else %} Complete {% endif %}
+                  {% if task.completed %} Undo {% else %} Done {% endif %}
                 </button>
+              </form>
+            </td>
+            <td>
+              <form method="POST" action="/">
+                {% csrf_token %}
+                <input type="hidden" name="delete_task_id" value="{{ task.id }}">
+                <button type="submit" class="btn btn-outline-danger">Delete</button>
               </form>
             </td>
           </tr>          
