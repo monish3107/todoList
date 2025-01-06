@@ -15,7 +15,7 @@ SECRET_KEY = 'django-insecure-4r4)3(nkb8dioe7=(sd$e*sg$37_n0@r14jd5krnsml(m!skv+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+ALLOWED_HOSTS = ['todolist-3kz7.onrender.com', '127.0.0.1', 'localhost']
 # Application definition
 
 INSTALLED_APPS = [
